@@ -14,6 +14,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/pschlump/godebug"
 )
 
 // DecodeHookFunc is the callback function that can be used for
@@ -291,9 +293,7 @@ func (d *Decoder) decodeString(name string, data interface{}, val reflect.Value)
 	}
 
 	if !converted {
-		return fmt.Errorf(
-			"'%s' expected type '%s', got unconvertible type '%s'",
-			name, val.Type(), dataVal.Type())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
 	}
 
 	return nil
@@ -324,9 +324,7 @@ func (d *Decoder) decodeInt(name string, data interface{}, val reflect.Value) er
 			return fmt.Errorf("cannot parse '%s' as int: %s", name, err)
 		}
 	default:
-		return fmt.Errorf(
-			"'%s' expected type '%s', got unconvertible type '%s'",
-			name, val.Type(), dataVal.Type())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
 	}
 
 	return nil
@@ -367,9 +365,7 @@ func (d *Decoder) decodeUint(name string, data interface{}, val reflect.Value) e
 			return fmt.Errorf("cannot parse '%s' as uint: %s", name, err)
 		}
 	default:
-		return fmt.Errorf(
-			"'%s' expected type '%s', got unconvertible type '%s'",
-			name, val.Type(), dataVal.Type())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
 	}
 
 	return nil
@@ -388,6 +384,8 @@ func (d *Decoder) decodeBool(name string, data interface{}, val reflect.Value) e
 		val.SetBool(dataVal.Uint() != 0)
 	case dataKind == reflect.Float32 && d.config.WeaklyTypedInput:
 		val.SetBool(dataVal.Float() != 0)
+	case dataKind == reflect.Float64 && d.config.WeaklyTypedInput:
+		val.SetBool(dataVal.Float() != 0)
 	case dataKind == reflect.String && d.config.WeaklyTypedInput:
 		b, err := strconv.ParseBool(dataVal.String())
 		if err == nil {
@@ -395,12 +393,10 @@ func (d *Decoder) decodeBool(name string, data interface{}, val reflect.Value) e
 		} else if dataVal.String() == "" {
 			val.SetBool(false)
 		} else {
-			return fmt.Errorf("cannot parse '%s' as bool: %s", name, err)
+			return fmt.Errorf("cannot parse '%s' as bool: %s, %s", name, err, godebug.LF())
 		}
 	default:
-		return fmt.Errorf(
-			"'%s' expected type '%s', got unconvertible type '%s'",
-			name, val.Type(), dataVal.Type())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
 	}
 
 	return nil
@@ -431,9 +427,7 @@ func (d *Decoder) decodeFloat(name string, data interface{}, val reflect.Value) 
 			return fmt.Errorf("cannot parse '%s' as float: %s", name, err)
 		}
 	default:
-		return fmt.Errorf(
-			"'%s' expected type '%s', got unconvertible type '%s'",
-			name, val.Type(), dataVal.Type())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
 	}
 
 	return nil

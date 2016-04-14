@@ -1,7 +1,7 @@
 package mapstructure
 
 import (
-	"encoding/json"
+	"github.com/pschlump/json" //	"encoding/json"
 	"testing"
 )
 
