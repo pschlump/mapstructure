@@ -183,6 +183,9 @@ func (d *Decoder) Decode(raw interface{}) error {
 
 // Decodes an unknown data type into a specific reflection value.
 func (d *Decoder) decode(name string, data interface{}, val reflect.Value) error {
+
+	// fmt.Printf("name[%s] data[%v] val[%v] %s\n", name, data, val, godebug.LF())
+
 	if data == nil {
 		// If the data is nil, then we don't set anything.
 		return nil
@@ -190,8 +193,7 @@ func (d *Decoder) decode(name string, data interface{}, val reflect.Value) error
 
 	dataVal := reflect.ValueOf(data)
 	if !dataVal.IsValid() {
-		// If the data value is invalid, then we just set the value
-		// to be the zero value.
+		// If the data value is invalid, then we just set the value to be the zero value.
 		val.Set(reflect.Zero(val.Type()))
 		return nil
 	}
@@ -199,9 +201,7 @@ func (d *Decoder) decode(name string, data interface{}, val reflect.Value) error
 	if d.config.DecodeHook != nil {
 		// We have a DecodeHook, so let's pre-process the data.
 		var err error
-		data, err = DecodeHookExec(
-			d.config.DecodeHook,
-			dataVal.Type(), val.Type(), data)
+		data, err = DecodeHookExec(d.config.DecodeHook, dataVal.Type(), val.Type(), data)
 		if err != nil {
 			return err
 		}
@@ -211,6 +211,7 @@ func (d *Decoder) decode(name string, data interface{}, val reflect.Value) error
 	dataKind := getKind(val)
 	switch dataKind {
 	case reflect.Bool:
+		fmt.Printf("IsBool: name[%s], %s\n", name, godebug.LF())
 		err = d.decodeBool(name, data, val)
 	case reflect.Interface:
 		err = d.decodeBasic(name, data, val)
@@ -374,6 +375,8 @@ func (d *Decoder) decodeUint(name string, data interface{}, val reflect.Value) e
 func (d *Decoder) decodeBool(name string, data interface{}, val reflect.Value) error {
 	dataVal := reflect.ValueOf(data)
 	dataKind := getKind(dataVal)
+
+	// fmt.Printf("decodeBool: name[%s], %v %v %s\n", name, dataVal, dataKind, godebug.LF())
 
 	switch {
 	case dataKind == reflect.Bool:
