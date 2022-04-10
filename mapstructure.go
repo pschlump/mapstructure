@@ -211,7 +211,9 @@ func (d *Decoder) decode(name string, data interface{}, val reflect.Value) error
 	dataKind := getKind(val)
 	switch dataKind {
 	case reflect.Bool:
-		fmt.Printf("IsBool: name[%s], %s\n", name, godebug.LF())
+		if db1 {
+			fmt.Printf("IsBool: name[%s], %s\n", name, godebug.LF())
+		}
 		err = d.decodeBool(name, data, val)
 	case reflect.Interface:
 		err = d.decodeBasic(name, data, val)
@@ -762,3 +764,5 @@ func getKind(val reflect.Value) reflect.Kind {
 		return kind
 	}
 }
+
+var db1 = false

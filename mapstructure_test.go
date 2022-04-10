@@ -1,6 +1,7 @@
 package mapstructure
 
 import (
+	"fmt"
 	"reflect"
 	"sort"
 	"strings"
@@ -837,7 +838,8 @@ func TestInvalidType(t *testing.T) {
 		t.Fatalf("error should be kind of Error, instead: %#v", err)
 	}
 
-	if derr.Errors[0] != "'Vstring' expected type 'string', got unconvertible type 'int'" {
+	// if derr.Errors[0] != "'Vstring' expected type 'string', got unconvertible type 'int'" {
+	if !strings.HasPrefix(fmt.Sprintf("%s", derr.Errors[0]), "'Vstring' expected type 'string', got unconvertible type 'int'") {
 		t.Errorf("got unexpected error: %s", err)
 	}
 

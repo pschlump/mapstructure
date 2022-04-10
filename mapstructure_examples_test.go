@@ -2,6 +2,8 @@ package mapstructure
 
 import (
 	"fmt"
+
+	"github.com/pschlump/godebug"
 )
 
 func ExampleDecode() {
@@ -36,6 +38,7 @@ func ExampleDecode() {
 }
 
 func ExampleDecode_errors() {
+	fmt.Printf("In ExampleDecode_errors()... at:%s\n", godebug.LF(-1))
 	type Person struct {
 		Name   string
 		Age    int
@@ -62,11 +65,12 @@ func ExampleDecode_errors() {
 	// Output:
 	// 5 error(s) decoding:
 	//
-	// * 'Age' expected type 'int', got unconvertible type 'string'
-	// * 'Emails[0]' expected type 'string', got unconvertible type 'int'
-	// * 'Emails[1]' expected type 'string', got unconvertible type 'int'
-	// * 'Emails[2]' expected type 'string', got unconvertible type 'int'
-	// * 'Name' expected type 'string', got unconvertible type 'int'
+	// * 'Age' expected type 'int', got unconvertible type 'string', File: /Users/philip/go/src/github.com/pschlump/mapstructure/mapstructure.go LineNo:330
+	// * 'Emails[0]' expected type 'string', got unconvertible type 'int', File: /Users/philip/go/src/github.com/pschlump/mapstructure/mapstructure.go LineNo:299
+	// * 'Emails[1]' expected type 'string', got unconvertible type 'int', File: /Users/philip/go/src/github.com/pschlump/mapstructure/mapstructure.go LineNo:299
+	// * 'Emails[2]' expected type 'string', got unconvertible type 'int', File: /Users/philip/go/src/github.com/pschlump/mapstructure/mapstructure.go LineNo:299
+	// * 'Name' expected type 'string', got unconvertible type 'int', File: /Users/philip/go/src/github.com/pschlump/mapstructure/mapstructure.go LineNo:299
+	fmt.Printf("In ExampleDecode_errors()... --- finished -- at:%s\n", godebug.LF())
 }
 
 func ExampleDecode_metadata() {
