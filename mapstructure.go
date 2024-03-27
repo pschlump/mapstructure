@@ -15,7 +15,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/pschlump/godebug"
+	"github.com/pschlump/dbgo"
 )
 
 // DecodeHookFunc is the callback function that can be used for
@@ -184,7 +184,7 @@ func (d *Decoder) Decode(raw interface{}) error {
 // Decodes an unknown data type into a specific reflection value.
 func (d *Decoder) decode(name string, data interface{}, val reflect.Value) error {
 
-	// fmt.Printf("name[%s] data[%v] val[%v] %s\n", name, data, val, godebug.LF())
+	// fmt.Printf("name[%s] data[%v] val[%v] %s\n", name, data, val, dbgo.LF())
 
 	if data == nil {
 		// If the data is nil, then we don't set anything.
@@ -212,7 +212,7 @@ func (d *Decoder) decode(name string, data interface{}, val reflect.Value) error
 	switch dataKind {
 	case reflect.Bool:
 		if db1 {
-			fmt.Printf("IsBool: name[%s], %s\n", name, godebug.LF())
+			fmt.Printf("IsBool: name[%s], %s\n", name, dbgo.LF())
 		}
 		err = d.decodeBool(name, data, val)
 	case reflect.Interface:
@@ -296,7 +296,7 @@ func (d *Decoder) decodeString(name string, data interface{}, val reflect.Value)
 	}
 
 	if !converted {
-		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), dbgo.LF())
 	}
 
 	return nil
@@ -327,7 +327,7 @@ func (d *Decoder) decodeInt(name string, data interface{}, val reflect.Value) er
 			return fmt.Errorf("cannot parse '%s' as int: %s", name, err)
 		}
 	default:
-		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), dbgo.LF())
 	}
 
 	return nil
@@ -368,7 +368,7 @@ func (d *Decoder) decodeUint(name string, data interface{}, val reflect.Value) e
 			return fmt.Errorf("cannot parse '%s' as uint: %s", name, err)
 		}
 	default:
-		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), dbgo.LF())
 	}
 
 	return nil
@@ -378,7 +378,7 @@ func (d *Decoder) decodeBool(name string, data interface{}, val reflect.Value) e
 	dataVal := reflect.ValueOf(data)
 	dataKind := getKind(dataVal)
 
-	// fmt.Printf("decodeBool: name[%s], %v %v %s\n", name, dataVal, dataKind, godebug.LF())
+	// fmt.Printf("decodeBool: name[%s], %v %v %s\n", name, dataVal, dataKind, dbgo.LF())
 
 	switch {
 	case dataKind == reflect.Bool:
@@ -398,10 +398,10 @@ func (d *Decoder) decodeBool(name string, data interface{}, val reflect.Value) e
 		} else if dataVal.String() == "" {
 			val.SetBool(false)
 		} else {
-			return fmt.Errorf("cannot parse '%s' as bool: %s, %s", name, err, godebug.LF())
+			return fmt.Errorf("cannot parse '%s' as bool: %s, %s", name, err, dbgo.LF())
 		}
 	default:
-		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), dbgo.LF())
 	}
 
 	return nil
@@ -432,7 +432,7 @@ func (d *Decoder) decodeFloat(name string, data interface{}, val reflect.Value) 
 			return fmt.Errorf("cannot parse '%s' as float: %s", name, err)
 		}
 	default:
-		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), godebug.LF())
+		return fmt.Errorf("'%s' expected type '%s', got unconvertible type '%s', %s", name, val.Type(), dataVal.Type(), dbgo.LF())
 	}
 
 	return nil
